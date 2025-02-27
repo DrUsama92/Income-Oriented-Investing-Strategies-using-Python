@@ -1,0 +1,31 @@
+import pandas as pd
+
+#Load the file
+data = pd.read_excel('Income Investment Strategy.xlsx')
+data
+
+# Drop rows with missing data
+data.dropna(inplace=True)
+data
+
+#Removing leading and trailing spaces
+data.columns = data.columns.str.strip()
+
+
+#Calculate average value for dividend yield
+average_dividend_yield = data['Dividend Yield'].mean()
+average_NAV = data['Net Asset Value(NAV)'].mean()
+
+
+#Defining income investment criteria
+#Select funds with a dividend yield, NAV that is higher than their average values.
+#Shortlist funds
+income_funds = data[(data['Dividend Yield'] > average_dividend_yield) | (data['Net Asset Value(NAV)'] > average_NAV)]
+income_funds
+
+# Export the selected funds to an Excel file
+income_funds.to_excel('income_funds.xlsx', index=False, sheet_name='Filtered Funds')
+
+
+
+

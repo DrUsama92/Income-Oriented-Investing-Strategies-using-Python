@@ -1,0 +1,49 @@
+import pandas as pd
+
+# Load the data
+data = pd.read_excel('Dividend Growth Investment Strategy.xlsx')
+data
+
+# Drop rows with missing data
+data.dropna(inplace=True)
+data
+
+#Calculate Dividend Growth Rate
+data['Dividend Growth Rate'] = (data['Annual Dividend 2023'] - data['Annual Dividend 2022']) / data['Annual Dividend 2022']
+data
+
+# Calculate the Compound Annual Dividend Growth Rate
+data['Compound Annual Dividend Growth Rate'] = (data['Annual Dividend 2023'] / data['Annual Dividend 2018']) ** (1 /5) - 1
+data
+
+
+#Calculate average value of Dividend Growth Rate and Compound Annual Dividend Growth Rate
+average_dividend_growth_rate = data['Dividend Growth Rate'].mean()
+average_compound_annual_dividend_growth_rate = data['Compound Annual Dividend Growth Rate'].mean() 
+
+
+#Defining Dividend Growth investment criteria
+#Select funds with a dividend growth rate and compound annual dividend growth rate that is higher than their average values.
+#Shortlist funds - Conservative (Approach 1)
+
+dividend_growth_funds_01 = data[(data['Dividend Growth Rate'] >  average_dividend_growth_rate) &  
+                                (data['Compound Annual Dividend Growth Rate'] > average_compound_annual_dividend_growth_rate)]
+dividend_growth_funds_01
+
+
+#Shortlist funds - Liberal (Approach 2)
+dividend_growth_funds_02 = data[(data['Dividend Growth Rate'] > average_dividend_growth_rate) |
+                             (data['Compound Annual Dividend Growth Rate'] > average_compound_annual_dividend_growth_rate)]
+dividend_growth_funds_02
+
+
+# Export the selected funds to an Excel file
+dividend_growth_funds_01.to_excel('dividend_growth_funds.xlsx', index=False, sheet_name='Filtered Funds')
+dividend_growth_funds_02.to_excel('dividend_growth_funds.xlsx', index=False, sheet_name='Filtered Funds')
+
+
+
+
+
+
+
